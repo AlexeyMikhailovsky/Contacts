@@ -1,0 +1,13 @@
+﻿.table .btn-sm {
+    margin-right: 5px;
+}
+
+.invalid-feedback {
+    display: none;
+    font-size: 0.875em;
+}
+
+.was-validated .invalid-feedback,
+.is-invalid .invalid-feedback {
+    display: block;
+}
