@@ -1,80 +1,57 @@
-﻿using Contacts.Data;
-using Contacts.Models;
+﻿using Contacts.Models.DTO;
+using Contacts.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Contacts.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class ContactsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IContactService _contactService;
 
-        public ContactsController(ApplicationDbContext context)
+        public ContactsController(IContactService contactService)
         {
-            _context = context;
+            _contactService = contactService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Contact>>> GetContacts()
+        public async Task<ActionResult<IEnumerable<ContactResponseDto>>> GetAll()
         {
-            return await _context.Contacts.ToListAsync();
+            var contacts = await _contactService.GetAllAsync();
+            return Ok(contacts);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Contact>> GetContact(int id)
+        [HttpGet("{id:int}")] 
+        public async Task<ActionResult<ContactResponseDto>> GetById(int id)
         {
-            var contact = await _context.Contacts.FindAsync(id);
-            if (contact == null)
-                return NotFound();
-            return contact;
+            if (id <= 0) return BadRequest("Bad id");
+            var contact = await _contactService.GetByIdAsync(id);
+            return contact is null ? NotFound() : Ok(contact);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Contact>> PostContact(Contact contact)
+        public async Task<ActionResult<ContactResponseDto>> Create(ContactCreateDto dto)
         {
-            if(!ModelState.IsValid)
-                return BadRequest(ModelState);
-            _context.Contacts.Add(contact);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetContact), new { id = contact.Id}, contact);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var created = await _contactService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutContact(int id, Contact contact)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, ContactUpdateDto dto)
         {
-            if (id != contact.Id)
-                return BadRequest("ID does not match");
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            _context.Entry(contact).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Contacts.Any(e => e.Id == id))
-                    return NotFound();
-                throw;
-            }
-            return NoContent();
+            if (id <= 0) return BadRequest("Bad id");
+            var result = await _contactService.UpdateAsync(id, dto);
+            return result is null ? NotFound() : NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteContact(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var contact = await _context.Contacts.FindAsync(id);
-            if (contact == null)
-                return NotFound();
-
-            _context.Contacts.Remove(contact);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            if (id <= 0) return BadRequest("Bad id");
+            var deleted = await _contactService.DeleteAsync(id);
+            return deleted ? NoContent() : NotFound();
         }
     }
 }

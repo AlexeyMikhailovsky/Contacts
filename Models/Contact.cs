@@ -1,18 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Contacts.Models
 {
+    [Table("contacts")]
     public class Contact
     {
+        [Column("id")]
         public int Id { get; set; }
-        [Required(ErrorMessage = "Name is required")]
-        [StringLength(150, ErrorMessage = "Name length no longer than 150")]
+        [Column("name")]
         public string Name { get; set; } = string.Empty;
-        [Phone(ErrorMessage = "Incorrect phone format")]
+        [Column("mobile_phone")]
         public string? MobilePhone { get; set; }
-        [StringLength(100)]
+        [Column("job_title")]
         public string? JobTitle { get; set; }
-        [DataType(DataType.Date)]
+        [Column("birth_date",TypeName = "date")]
         public DateTime? BirthDate { get; set; }
     }
 }

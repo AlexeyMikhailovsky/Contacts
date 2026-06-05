@@ -1,8 +1,12 @@
 ﻿let currentContactId = null;
+let pendingDeleteId = null;
 let modal = null;
+let toast;
 
 $(document).ready(function () {
     modal = new bootstrap.Modal(document.getElementById('contactModal'));
+    toast = new bootstrap.Toast(document.getElementById('liveToast'));
+    deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
     loadContacts();
 
     $('#addContactBtn').click(function () {
@@ -14,7 +18,6 @@ $(document).ready(function () {
 
     $('#saveBtn').click(function () {
         if (validateForm()) {
-            // Base object 
             const contact = {
                 name: $('#name').val().trim(),
                 mobilePhone: $('#mobilePhone').val().trim() || null,
@@ -29,7 +32,30 @@ $(document).ready(function () {
             }
         }
     });
+
+    $('#confirmDeleteBtn').click(function () {
+        if (pendingDeleteId !== null) {
+            deleteContact(pendingDeleteId);
+            pendingDeleteId = null;
+        }
+        deleteModal.hide();
+    });
+
+    $('#deleteConfirmModal').on('hidden.bs.modal', function () {
+        pendingDeleteId = null;
+    });
 });
+
+function showToast(message, title = 'Уведомление', isError = false) {
+    $('#toastTitle').text(title);
+    $('#toastMessage').text(message);
+    if (isError) {
+        $('.toast-header').addClass('bg-danger text-white');
+    } else {
+        $('.toast-header').removeClass('bg-danger text-white');
+    }
+    toast.show();
+}
 
 function loadContacts() {
     $.ajax({
@@ -39,7 +65,7 @@ function loadContacts() {
             renderContacts(data);
         },
         error: function () {
-            alert('Error loading contacts');
+            showToast('Error loading contacts', 'Ошибка', true);
         }
     });
 }
@@ -57,8 +83,8 @@ function renderContacts(contacts) {
                 <td>${escapeHtml(c.jobTitle || '')}</td>
                 <td>${birth}</td>
                 <td>
-                    <button class="btn btn-sm btn-warning edit-btn" data-id="${c.id}">✏️ Add</button>
-                    <button class="btn btn-sm btn-danger delete-btn" data-id="${c.id}">🗑️ Delete</button>
+                    <button class="btn btn-sm btn-warning edit-btn" data-id="${c.id}">✏️ Edit</button>
+                    <button class="btn btn-sm btn-danger delete-btn" data-id="${c.id}" data-name="${escapeHtml(c.name)}">🗑️ Delete</button>
                 </td>
             </tr>
         `;
@@ -70,7 +96,10 @@ function renderContacts(contacts) {
     });
     $('.delete-btn').click(function () {
         const id = $(this).data('id');
-        if (confirm('Delete contact?')) deleteContact(id);
+        const name = $(this).closest('tr').find('td:eq(1)').text();
+        $('#deleteContactName').text(name);
+        pendingDeleteId = id;
+        deleteModal.show();
     });
 }
 
@@ -89,7 +118,7 @@ function editContact(id) {
             modal.show();
         },
         error: function () {
-            alert('Error loading contact data');
+            showToast('Error loading contact data', 'Ошибка', true);
         }
     });
 }
@@ -136,7 +165,7 @@ function deleteContact(id) {
             loadContacts();
         },
         error: function () {
-            alert('Deletion error');
+            showToast('Deletion error', 'Ошибка', true);
         }
     });
 }
@@ -193,9 +222,9 @@ function handleServerError(xhr) {
         for (const key in errors) {
             errorMsg += `${key}: ${errors[key].join(', ')}\n`;
         }
-        alert(errorMsg);
+        showToast(errorMsg, 'Ошибка валидации', true);
     } else {
-        alert('Unknown error. Check data.');
+        showToast('Unknown error. Check data.', 'Ошибка', true);
     }
 }
 
