@@ -32,7 +32,7 @@ namespace Contacts.Services
 
         public async Task<ContactResponseDto?> GetByIdAsync(int id)
         {
-            var contact = await _context.Contacts.FindAsync(id);
+            var contact = await _context.Contacts.FindAsync(id);  
             return contact is null ? null : MapToDto(contact);
         }
 

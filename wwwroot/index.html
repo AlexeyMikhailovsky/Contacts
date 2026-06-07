@@ -9,10 +9,10 @@
 </head>
 <body class="container mt-4">
     <h2>Contacts</h2>
-    <button class="btn btn-primary mb-3" id="addContactBtn">Add new Contact</button>
+    <button class="btn btn-primary mb-3" id="addContactBtn">Добавить новый Контакт</button>
     <table class="table table-bordered table-hover" id="contactsTable">
         <thead class="table-dark">
-            <tr><th>ID</th><th>Name</th><th>MobilePhone</th><th>JobTitle</th><th>BirthDate</th><th>Actions</th></tr>
+            <tr><th>ID</th><th>Имя</th><th>Мобильный телефон</th><th>Должность</th><th>Дата рождения</th><th>Действия</th></tr>
         </thead>
         <tbody id="contactsBody"></tbody>
     </table>
@@ -20,36 +20,37 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Add Contact</h5>
+                    <h5 class="modal-title" id="modalTitle">Добавить Контакт</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="contactForm">
                         <input type="hidden" id="contactId">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
+                            <label for="name" class="form-label">Имя <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="name" required>
-                            <div class="invalid-feedback">Name required</div>
+                            <div class="invalid-feedback">Имя обязательно</div>
                         </div>
                         <div class="mb-3">
-                            <label for="mobilePhone" class="form-label">Mobile phone number</label>
+                            <label for="mobilePhone" class="form-label">Номер мобильного телефона</label>
                             <input type="tel" class="form-control" id="mobilePhone">
-                            <div class="invalid-feedback">10–15 digits, can start with +</div>
+                            <div class="invalid-feedback">10–15 цифр, может начинаться с +</div>
                         </div>
                         <div class="mb-3">
-                            <label for="jobTitle" class="form-label">JobTitle</label>
+                            <label for="jobTitle" class="form-label">Должность</label>
                             <input type="text" class="form-control" id="jobTitle">
                         </div>
                         <div class="mb-3">
-                            <label for="birthDate" class="form-label">BirthDate</label>
+                            <label for="birthDate" class="form-label">Дата рождения</label>
                             <input type="date" class="form-control" id="birthDate">
-                            <div class="invalid-feedback">Date can'not be in the future or earlier than 1900</div>
+                            <div class="invalid-feedback">Дата не может быть в будущем или ранее 1900 года</div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="saveBtn">Save</button>
+                    <span class="text-danger">* - обязательно к заполнению</span>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" id="saveBtn">Сохранить</button>
                 </div>
             </div>
         </div>
@@ -63,11 +64,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete the contact <strong id="deleteContactName"></strong>?
+                    Вы уверены, что хотите удалить контакт <strong id="deleteContactName"></strong>?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Удалить</button>
                 </div>
             </div>
         </div>
@@ -76,11 +77,11 @@
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="3000">
             <div class="toast-header">
-                <strong class="me-auto" id="toastTitle">Notification</strong>
+                <strong class="me-auto" id="toastTitle">Уведомление</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
             </div>
             <div class="toast-body" id="toastMessage">
-                Message text
+                Текст сообщения
             </div>
         </div>
     </div>

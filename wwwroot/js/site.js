@@ -11,7 +11,7 @@ $(document).ready(function () {
 
     $('#addContactBtn').click(function () {
         resetForm();
-        $('#modalTitle').text('Add contact');
+        $('#modalTitle').text('Добавить контакт');
         currentContactId = null;
         modal.show();
     });
@@ -65,7 +65,7 @@ function loadContacts() {
             renderContacts(data);
         },
         error: function () {
-            showToast('Error loading contacts', 'Ошибка', true);
+            showToast('Ошибка загрузки контактов', 'Ошибка', true);
         }
     });
 }
@@ -83,8 +83,8 @@ function renderContacts(contacts) {
                 <td>${escapeHtml(c.jobTitle || '')}</td>
                 <td>${birth}</td>
                 <td>
-                    <button class="btn btn-sm btn-warning edit-btn" data-id="${c.id}">✏️ Edit</button>
-                    <button class="btn btn-sm btn-danger delete-btn" data-id="${c.id}" data-name="${escapeHtml(c.name)}">🗑️ Delete</button>
+                    <button class="btn btn-sm btn-warning edit-btn" data-id="${c.id}">✏️ Изменить</button>
+                    <button class="btn btn-sm btn-danger delete-btn" data-id="${c.id}" data-name="${escapeHtml(c.name)}">🗑️ Удалить</button>
                 </td>
             </tr>
         `;
@@ -114,11 +114,11 @@ function editContact(id) {
             $('#mobilePhone').val(contact.mobilePhone || '');
             $('#jobTitle').val(contact.jobTitle || '');
             $('#birthDate').val(contact.birthDate ? contact.birthDate.split('T')[0] : '');
-            $('#modalTitle').text('Edit contact');
+            $('#modalTitle').text('Изменить контакт');
             modal.show();
         },
         error: function () {
-            showToast('Error loading contact data', 'Ошибка', true);
+            showToast('Ошибка загрузки данных контакта', 'Ошибка', true);
         }
     });
 }
@@ -165,7 +165,7 @@ function deleteContact(id) {
             loadContacts();
         },
         error: function () {
-            showToast('Deletion error', 'Ошибка', true);
+            showToast('Ошибка удаления', 'Ошибка', true);
         }
     });
 }
@@ -218,13 +218,13 @@ function resetForm() {
 function handleServerError(xhr) {
     if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.errors) {
         const errors = xhr.responseJSON.errors;
-        let errorMsg = 'Validation error:\n';
+        let errorMsg = 'Ошибка валидации:\n';
         for (const key in errors) {
             errorMsg += `${key}: ${errors[key].join(', ')}\n`;
         }
         showToast(errorMsg, 'Ошибка валидации', true);
     } else {
-        showToast('Unknown error. Check data.', 'Ошибка', true);
+        showToast('Неизвестная ошибка. Проверьте данные.', 'Ошибка', true);
     }
 }
 

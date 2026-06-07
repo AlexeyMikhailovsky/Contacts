@@ -25,7 +25,7 @@ namespace Contacts.Controllers
         [HttpGet("{id:int}")] 
         public async Task<ActionResult<ContactResponseDto>> GetById(int id)
         {
-            if (id <= 0) return BadRequest("Bad id");
+            if (id <= 0) return BadRequest("Неверный Id");
             var contact = await _contactService.GetByIdAsync(id);
             return contact is null ? NotFound() : Ok(contact);
         }
@@ -41,7 +41,8 @@ namespace Contacts.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, ContactUpdateDto dto)
         {
-            if (id <= 0) return BadRequest("Bad id");
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (id <= 0) return BadRequest("Неверный Id");
             var result = await _contactService.UpdateAsync(id, dto);
             return result is null ? NotFound() : NoContent();
         }
@@ -49,7 +50,7 @@ namespace Contacts.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0) return BadRequest("Bad id");
+            if (id <= 0) return BadRequest("Неверный Id");
             var deleted = await _contactService.DeleteAsync(id);
             return deleted ? NoContent() : NotFound();
         }

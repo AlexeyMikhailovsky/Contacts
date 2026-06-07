@@ -8,7 +8,7 @@ namespace Contacts.Models.DTO
         string Name,
         [RegularExpression(@"^\+?[0-9]{10,15}$", ErrorMessage = "10–15 цифр, может начинаться с +")]
         string? MobilePhone,
-        [StringLength(100)]
+        [StringLength(100, ErrorMessage = "Максимум 100 символов")]
         string? JobTitle,
         DateOnly? BirthDate
     );
