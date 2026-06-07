@@ -19,12 +19,12 @@
 Примените миграции и запустите.
 ## Функционал
 Главная страница
-![logo](https://github.com/AlexeyMikhailovsky/Contacts/docs/MainPage.png)
+![logo](https://github.com/AlexeyMikhailovsky/Contacts/blob/69486a15742b8596d9416375545bc65de0a4aa65/docs/MainPage.png)
 Форма добавления
-![logo](https://github.com/AlexeyMikhailovsky/Contacts/docs/AddPopup.png)
+![logo](https://github.com/AlexeyMikhailovsky/Contacts/blob/69486a15742b8596d9416375545bc65de0a4aa65/docs/AddPopup.png)
 Предупреждение о необходимых полях
-![logo](https://github.com/AlexeyMikhailovsky/Contacts/docs/Requirements.png)
+![logo](https://github.com/AlexeyMikhailovsky/Contacts/blob/69486a15742b8596d9416375545bc65de0a4aa65/docs/Requirements.png)
 Удаление
-![logo](https://github.com/AlexeyMikhailovsky/Contacts/docs/DeletePopup.png)
+![logo](https://github.com/AlexeyMikhailovsky/Contacts/blob/69486a15742b8596d9416375545bc65de0a4aa65/docs/DeletePopup.png)
 Сообщение об ошибке
-![logo](https://github.com/AlexeyMikhailovsky/Contacts/docs/ErrPopup.png)
+![logo](https://github.com/AlexeyMikhailovsky/Contacts/blob/69486a15742b8596d9416375545bc65de0a4aa65/docs/ErrPopup.png)
